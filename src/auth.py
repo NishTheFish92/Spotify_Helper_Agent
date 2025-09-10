@@ -16,6 +16,14 @@ scopes = "playlist-modify-private playlist-modify-public"
 
 
 def get_auth_code():
+    """
+    Initiates the Spotify OAuth 2.0 authorization flow.
+
+    Opens a browser window for the user to log in and authorize the app.
+    Starts a local HTTP server to capture the authorization code from the redirect.
+    Returns:
+        str: The authorization code if successful, otherwise None.
+    """
     auth_url = "https://accounts.spotify.com/authorize?" + urllib.parse.urlencode({
     "client_id": client_id,
     "response_type": "code",
@@ -54,6 +62,15 @@ def get_auth_code():
     return CallbackHandler.auth_code
 
 def get_tokens(auth_code):
+    """
+    Exchanges the authorization code for access and refresh tokens.
+
+    Args:
+        auth_code (str): The authorization code obtained from Spotify.
+
+    Returns:
+        dict: A dictionary containing access_token, refresh_token, and other token info.
+    """
     url = "https://accounts.spotify.com/api/token"
     headers = {
         "Authorization": "Basic " + base64.b64encode(
@@ -71,6 +88,15 @@ def get_tokens(auth_code):
     return r.json()
 
 def refresh_access_token(refresh_token):
+    """
+    Refreshes the Spotify access token using a refresh token.
+
+    Args:
+        refresh_token (str): The refresh token obtained from Spotify.
+
+    Returns:
+        str: The new access token.
+    """
     url = "https://accounts.spotify.com/api/token"
     auth_header = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
     headers = {"Authorization": f"Basic {auth_header}"}
@@ -82,3 +108,11 @@ def refresh_access_token(refresh_token):
     r = requests.post(url, headers=headers, data=data)
     r.raise_for_status()
     return r.json()['access_token']
+
+def write_refresh_token_to_env(refresh_token):
+    """
+    Writes the refresh token to the .env file.
+    """
+    env_path = ".env"
+    with open(env_path, "a") as env_file:
+        env_file.write(f"\nrefresh_token={refresh_token}\n")
