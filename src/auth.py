@@ -5,14 +5,13 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import requests
 import base64
-import json
 
 load_dotenv()
 client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
 redirect_uri = "http://127.0.0.1:8888/callback/"
 scopes = "playlist-modify-private playlist-modify-public"
-
+access_token = None
 
 
 def get_auth_code():
@@ -116,3 +115,43 @@ def write_refresh_token_to_env(refresh_token):
     env_path = ".env"
     with open(env_path, "a") as env_file:
         env_file.write(f"\nrefresh_token={refresh_token}\n")
+
+def main_auth():
+    global access_token
+    refresh_token = os.getenv("refresh_token")
+    if refresh_token:
+        access_token = refresh_access_token(refresh_token)
+        print("Welcome! Access token refreshed!")
+    else:
+        print("No refresh token found. Starting authentication flow...")
+        auth_code = get_auth_code()
+        if auth_code:
+            tokens = get_tokens(auth_code)
+            #print("Access token:", tokens.get("access_token"))
+            #print("Refresh token:", tokens.get("refresh_token")) #Uncomment it for debugging.
+            access_token = tokens.get("access_token")
+            refresh_token= tokens.get("refresh_token")
+            if refresh_token:
+                write_refresh_token_to_env(refresh_token)
+                access_token = refresh_access_token(refresh_token)
+
+
+        else:
+            print("Authentication failed.")
+    
+    headers = {
+    "Authorization": f"Bearer {access_token}",
+    "Content-Type": "application/json"
+    }
+    
+    r = requests.get("https://api.spotify.com/v1/me", headers=headers)
+    r.raise_for_status()
+    user_id = r.json()["id"]
+
+    with open("user_id", "w") as f:
+        f.write(user_id)
+
+    return(access_token)
+
+def retrieve_access_token():
+    return(access_token)
