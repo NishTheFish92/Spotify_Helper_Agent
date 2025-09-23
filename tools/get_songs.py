@@ -11,6 +11,7 @@ Input:
 - limit: number of songs to recommend (integer)
 Always condense the user's request to a single tag and a number before calling this tool.
 Input format: tag,limit
+If songs cannot be recommended by the Recommender tool, use your knowledge to search for songs. Names should be of the format Artist - Song 
 """
 
 def get_recommendations(input_str : str):
