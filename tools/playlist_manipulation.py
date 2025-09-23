@@ -24,3 +24,8 @@ def create_playlist(name : str):
         return(f"Success Playlist {name} created ")
     except:
         return(f"Failure ({r.status_code}): {r.text} ")
+
+#Delete playlist with given playlist name
+
+#Change playlist from private to public and public to private
+

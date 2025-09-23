@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from langchain.schema import SystemMessage
 from tools.playlist_manipulation import create_playlist
+from tools.get_songs import get_recommendations,recommendation_desc,get_spotify_song_id
+from tools.modify_songs_in_playlist import add_songs_to_playlist
 load_dotenv()
 api_key = os.environ.get("GOOGLE_API_KEY")
 
@@ -11,6 +13,9 @@ def run_spotify_agent(llm):
     
     tools = [
         Tool(name="Create Playlist", func=create_playlist, description="Creates a playlist with specified name Input: 'name'"),
+        Tool(name="Get Recommendations", func=get_recommendations, description=recommendation_desc),
+        Tool(name="Get song IDs",func=get_spotify_song_id,description="Returns the spotify Song IDs from the song names. Input: ['Song 1', 'Song2', 'Song3',]"),
+        Tool(name = "Add songs to playlist",func=add_songs_to_playlist,description="Adds spotify Song IDs to playlist, Input: [SongID_1,SongID_2,...,'playlist_name']")
     ]
 
     system_message = SystemMessage(

@@ -10,7 +10,7 @@ load_dotenv()
 client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
 redirect_uri = "http://127.0.0.1:8888/callback/"
-scopes = "playlist-modify-private playlist-modify-public"
+scopes = "playlist-modify-private playlist-modify-public playlist-read-collaborative playlist-read-private"
 access_token = None
 
 
