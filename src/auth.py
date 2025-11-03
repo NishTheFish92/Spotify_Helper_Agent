@@ -38,11 +38,14 @@ def get_auth_code():
                 CallbackHandler.auth_code = params["code"][0]
                 #print("Authorization code:", CallbackHandler.auth_code)
                 self.send_response(200)
-                #self.end_headers()
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.end_headers()
                 self.wfile.write(b"You can close this window now.")
             else:
                 self.send_response(400)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
                 self.end_headers()
+                self.wfile.write(b"Authorization failed or missing code.")
 
     server = HTTPServer(("127.0.0.1", 8888), CallbackHandler)
     print("Waiting for Spotify redirect...")
