@@ -11,9 +11,13 @@ Input:
 - limit: number of songs to recommend (integer)
 Always condense the user's request to a single tag and a number before calling this tool.
 Input format: tag,limit
-If songs cannot be recommended by the Recommender tool, use your knowledge to search for songs. Names should be of the format Artist - Song 
+If and only if songs cannot be recommended by the Recommender tool, use your knowledge or the SERP API tool to search for songs. Names should be of the format Artist - Song 
 """
-
+recommendation_desc_serp = """This tool must be used if and only if the Get Recommendations tool is unable to get suitable recommendations
+Use this to search for songs based on a query (like 'top 10 chill songs'). 
+You are allowed to use this tool only a maximum of two times, as the number of API calls are limited. Use it with caution.
+If the songs do not match what the user wants, use your own knowledge to recommend songs. 
+Returns song names."""
 def get_recommendations(input_str : str):
     """
     Fetches top tracks for a given mood tag from Last.fm.
