@@ -1,13 +1,8 @@
 # Spotify Helper Agent
 
-Lightweight CLI Spotify assistant that uses a LangChain-based agent and small utility tools to:
-- create/delete playlists
-- add/remove tracks
-- fetch track recommendations (Last.fm)
-- toggle or set playlist privacy
-- look up Spotify track IDs
+A conversational CLI tool that lets you manage your Spotify library using natural language. Built with LangChain and a Gemini/OpenAI backend, it handles playlist workflows end-to-end. Creating playlists, finding recommendations, and managing tracks without touching the Spotify UI.
 
-The project is intended for single-user, interactive use (opens a browser for Spotify OAuth).
+**Built with:** Python · LangChain · Spotify Web API · Last.fm API · SerpAPI · Gemini/OpenAI
 
 ---
 
@@ -27,7 +22,7 @@ The project is intended for single-user, interactive use (opens a browser for Sp
 ## Requirements
 
 - Python 3.10+  
-- Recommended packages (install with pip or your chosen installer):
+- Recommended packages (install via uv sync or pip install -r requirements.txt):
   - langchain
   - langchain-community
   - requests
@@ -49,17 +44,16 @@ git clone https://github.com/NishTheFish92/Spotify_Helper_Agent.git
 uv venv
 ```
 3. Activate the virtual environment by doing
-
+Linux/MacOS:
 ```bash
 source .venv/bin/activate
 ``` 
-In linux
 
-OR
+Windows:
 ```powershell
 .venv/Scripts/activate
 ```
-In windows
+
 
 4. Sync the requirements of the project to your newly created Virtual environment
 ```bash
@@ -70,7 +64,7 @@ uv sync
 ## Environment / .env
 
 Create a `.env` file in the project root. Use the exact variable names the code expects:
-> You will need to get the client_id and client_secret after creating a project from the spotify developer dashboard. The redirect URI must be set to `http://127.0.0.1:8888/callback/`. 
+> You will need to get the client_id and client_secret after creating a project from the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard). The redirect URI must be set to `http://127.0.0.1:8888/callback/`. 
 
 ### Required environment variables
 - client_id
@@ -78,16 +72,15 @@ Create a `.env` file in the project root. Use the exact variable names the code 
 - lastfm_api_key (for Last.fm recommendations)
 - SERP_API_KEY (for SerpApi; used as the search fallback)
 - GOOGLE_API_KEY (used specifically for Gemini/Google LLM integrations)
-- refresh_token (Doing the OAuth process automatically adds this to your .env file)
+- refresh_token (Going through the OAuth process automatically adds this to your .env file)
 
 Example `.env`:
 ```env
 client_id=YOUR_SPOTIFY_CLIENT_ID
 client_secret=YOUR_SPOTIFY_CLIENT_SECRET
-redirect_uri=http://127.0.0.1:8888/callback/
 # refresh_token=...      # automatically created by the auth flow 
-lastfm_api_key=YOUR_LASTFM_KEY
-SERP_API_KEY=YOUR_SERPAPI_KEY
+lastfm_api_key=YOUR_LASTFM_KEY   # primary recommendations source (replaces deprecated Spotify /recommendations)
+SERP_API_KEY=YOUR_SERPAPI_KEY    # fallback when Last.fm results are thin
 GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY  # for Gemini/Google LLM usage
 ```
 
@@ -111,31 +104,41 @@ Flow:
 - `run_spotify_agent(llm)` starts the agent loop.
 
 ---
+> Known limitation: Access tokens expire after one hour. Re-run python main.py to refresh. Automatic token refresh is planned (see Roadmap).
+> 
+### A note on recommendations
+Spotify's native `/recommendations` endpoint was deprecated in late 2024 and is 
+no longer available to new or existing third-party apps. To work around this, the 
+agent uses **Last.fm** as the primary recommendation source (via tag-based lookup) 
+and falls back to **SerpAPI** (Google search) when Last.fm returns insufficient 
+results. This is why both `lastfm_api_key` and `SERP_API_KEY` are required.
 
 ## Tools & usage notes
 
 Agent-exposed tools return strings the LLM reads and follow simple input contracts:
 
-- Create Playlist Input: playlist name (string)
-- Delete Playlist Input: playlist name (string)
-- Get Recommendations Input: `tag,limit` (single tag word and integer); returns newline-separated `Artist - Song`
-- Get song IDs Input: list of song titles; returns spotify track IDs
-- Add songs to playlist Input: Python-list-like string: `['trackid1',...,'playlist_name']`
-- Delete songs from playlist same format as add
-- Make playlist public / Make playlist private Input: playlist name (string)
+| Tool | Input | Returns |
+|------|-------|---------|
+| Create Playlist | playlist name | confirmation string |
+| Delete Playlist | playlist name | confirmation string |
+| Get Recommendations | `tag,limit` | newline-separated `Artist - Song` |
+| Get Song IDs | list of song titles | Spotify track IDs |
+| Add Songs to Playlist | `['trackid1', ..., 'playlist_name']` | confirmation string |
+| Remove Songs from Playlist | `['trackid1', ..., 'playlist_name']` | confirmation string |
+| Make Playlist Public/Private | playlist name | confirmation string |
 
-Important:
-- Access tokens expire you may need to re run `main.py` for every hour of usage to renew the access token.
+
+
+
 
 ---
 
-## Potential updates
-- Automatic refreshing of refresh token after Access token expires
-- Multiple user support
-- Better search recommendations
-- Personalized Search recommendations
-- Context aware between user messages.
-- User interface
+## Roadmap
+- Automatic access token refresh (no need to re-run main.py hourly)
+- Multi-user support
+- Personalized and context-aware recommendations
+- Conversation memory between user messages
+- Optional web UI
 
 ---
 
