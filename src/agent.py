@@ -46,7 +46,7 @@ def run_spotify_agent(llm):
     )
 
 
-    print("🤖 Agent ready! Type 'quit' to exit.\n")
+    print("Agent ready! Type 'quit' to exit.\n")
 
     while True:
         query = input("You: ")

@@ -1,5 +1,5 @@
 from src import main_auth
-from src import run_spotify_agent
+from src.agent import run_spotify_agent
 from src import init_llm
 
 
