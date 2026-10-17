@@ -12,5 +12,6 @@ dependencies = [
     "langchain-community>=0.3.29",
     "langchain-google-genai>=2.1.10",
     "langchain-openai>=0.3.35",
+    "langgraph>=1.0.1",
     "notebook>=7.4.5",
 ]
