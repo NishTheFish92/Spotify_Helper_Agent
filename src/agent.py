@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
+from langgraph.types import Command
 from .graph import build_graph
 import pathlib
 
 pathlib.Path("user_id").touch(exist_ok=True)
 load_dotenv()
-VERBOSE = True
+VERBOSE = False
 
 def run_spotify_agent(llm):
 
@@ -22,13 +23,24 @@ def run_spotify_agent(llm):
 
         try:
             inputs = {"messages": [HumanMessage(query)]}
-            if VERBOSE:
-                for chunk in app.stream(inputs, config, stream_mode="updates"):
-                    for node, update in chunk.items():
-                        for message in update["messages"]:
-                            message.pretty_print()
-            else:
-                result = app.invoke(inputs, config)
-                print("Bot:", result["messages"][-1].content)
+            while True:
+                if VERBOSE:
+                    for chunk in app.stream(inputs, config, stream_mode="updates"):
+                        for node, update in chunk.items():
+                            if node == "__interrupt__" or not update:
+                                continue
+                            for message in update["messages"]:
+                                message.pretty_print()
+                else:
+                    app.invoke(inputs, config)
+
+                state = app.get_state(config)
+                if not state.interrupts:
+                    break
+                answer = input(f"Bot: {state.interrupts[0].value} ")
+                inputs = Command(resume=answer)
+
+            if not VERBOSE:
+                print("Bot:", state.values["messages"][-1].content)
         except Exception as e:
             print("Bot: (error handled)", str(e))
