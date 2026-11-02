@@ -1,5 +1,6 @@
 import requests
 import json
+from langchain_core.tools import tool
 from src import retrieve_access_token
 
 with open("user_id", "r") as f:
@@ -35,8 +36,13 @@ def get_playlist_id(name):
             break
     return(playlist_id)
 
+@tool(parse_docstring=True)
 def create_playlist(name : str):
-    """Creates a playlist with specified name Input format: 'name'"""
+    """Creates a new private playlist.
+
+    Args:
+        name (str): Name of the playlist to create
+    """
     access_token = retrieve_access_token()
     playlist_data = {
         "name": name,
@@ -56,8 +62,13 @@ def create_playlist(name : str):
         return(f"Failure ({r.status_code}): {r.text} ")
 
 #Delete playlist with given playlist name
+@tool(parse_docstring=True)
 def delete_playlist(name: str):
-    """Deletes a playlist with the given name"""
+    """Deletes a playlist from the user's library.
+
+    Args:
+        name (str): Name of the playlist to delete
+    """
     access_token = retrieve_access_token()
     playlist_id = get_playlist_id(name)
     if playlist_id is None:
@@ -73,8 +84,13 @@ def delete_playlist(name: str):
         return f" Error ({r.status_code}): {r.text}"
 
 #Change playlist from private to public and public to private
+@tool(parse_docstring=True)
 def toggle_playlist_privacy(name: str):
-    """Changes playlist visibility (private ↔ public)"""
+    """Switches a playlist between private and public.
+
+    Args:
+        name (str): Name of the playlist to change
+    """
     access_token = retrieve_access_token()
     playlist_id = get_playlist_id(name)
     if playlist_id is None:

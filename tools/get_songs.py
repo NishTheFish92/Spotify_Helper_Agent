@@ -1,33 +1,25 @@
 import requests
 import os
 from dotenv import load_dotenv
-import ast
 from src import retrieve_access_token
+from langchain_core.tools import tool
+from langchain_community.utilities import SerpAPIWrapper
 load_dotenv()
 API_KEY = os.getenv("lastfm_api_key")
-recommendation_desc = """Gets song recommendations based on user mood or activity.
-Input: 
-- tag: a single word describing the user's mood or activity (e.g., "chill", "workout", "study")
-- limit: number of songs to recommend (integer)
-Always condense the user's request to a single tag and a number before calling this tool.
-Input format: tag,limit
-If and only if songs cannot be recommended by the Recommender tool, use your knowledge or the SERP API tool to search for songs. Names should be of the format Artist - Song 
-"""
-recommendation_desc_serp = """This tool must be used if and only if the Get Recommendations tool is unable to get suitable recommendations
-Use this to search for songs based on a query (like 'top 10 chill songs'). 
-You are allowed to use this tool only a maximum of two times, as the number of API calls are limited. Use it with caution.
-If the songs do not match what the user wants, use your own knowledge to recommend songs. 
-Returns song names."""
-def get_recommendations(input_str : str):
+search = SerpAPIWrapper()
+
+@tool(parse_docstring=True)
+def get_recommendations(tag: str, limit: int):
     """
-    Fetches top tracks for a given mood tag from Last.fm.
+    Gets song recommendations for a mood or activity tag from Last.fm.
+
+    Args:
+        tag (str): A single word describing the mood or activity (e.g. "chill", "workout")
+        limit (int): Number of songs to recommend
 
     Returns:
         str: Formatted string with track and artist names.
     """
-    parts = input_str.split(',')
-    tag = parts[0]
-    limit = int(parts[1])
     url = 'https://ws.audioscrobbler.com/2.0/'
     params = {
         'method': 'tag.getTopTracks',
@@ -56,15 +48,32 @@ def get_recommendations(input_str : str):
        return f"No recommendations found for this tag. (Status code: {status})"
 
 
-def get_spotify_song_id(input_str : str):
+@tool(parse_docstring=True)
+def search_songs(query: str):
     """
-    gets spotify song IDs from song names
+    Searches the web for songs matching a query (e.g. "top 10 chill songs").
+
+    Args:
+        query (str): What to search for
+
+    Returns:
+        str: Search results containing song names
+    """
+    return search.run(query)
+
+
+@tool(parse_docstring=True)
+def get_spotify_song_id(song_names: list[str]):
+    """
+    Looks up Spotify track IDs for the given song names. Songs that aren't found are skipped.
+
+    Args:
+        song_names (list[str]): Song names, each in the format "Artist - Song"
 
     Returns:
         str: List of IDs
     """
     access_token = retrieve_access_token()
-    songs = ast.literal_eval(input_str)
     headers = {
     "Authorization": f"Bearer {access_token}"
     }
@@ -75,7 +84,7 @@ def get_spotify_song_id(input_str : str):
     }
     ids = []
     url = "https://api.spotify.com/v1/search"
-    for i in songs:
+    for i in song_names:
         params['q'] = i
         response = requests.get(url, headers=headers, params=params)
         if response.status_code == 200:
