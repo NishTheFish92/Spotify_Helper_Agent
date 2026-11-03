@@ -1,0 +1,1192 @@
+{
+  "runs_per_case": 3,
+  "summary": {
+    "categories": {
+      "create": {
+        "pass_rate": 1.0,
+        "passed": 9,
+        "graded": 9,
+        "failures": {}
+      },
+      "delete": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "graded": 6,
+        "failures": {}
+      },
+      "privacy": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "graded": 6,
+        "failures": {}
+      },
+      "songs": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "graded": 6,
+        "failures": {}
+      },
+      "recommend": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "graded": 6,
+        "failures": {}
+      },
+      "search": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "graded": 6,
+        "failures": {}
+      },
+      "missing_info": {
+        "pass_rate": 0.75,
+        "passed": 9,
+        "graded": 12,
+        "failures": {
+          "invented_args": 3
+        }
+      },
+      "chat": {
+        "pass_rate": 1.0,
+        "passed": 9,
+        "graded": 9,
+        "failures": {}
+      },
+      "delete_traps": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "graded": 6,
+        "failures": {}
+      }
+    },
+    "unrequested_deletes": 0,
+    "flaky": [
+      "Add some songs to my playlist",
+      "Make it private"
+    ]
+  },
+  "cases": [
+    {
+      "category": "create",
+      "prompt": "Make a playlist called Gym",
+      "expect": {
+        "tool": "create_playlist",
+        "args": {
+          "name": "gym"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_366432",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_380675",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_357689",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "create",
+      "prompt": "Create a new playlist named Late Night Drive",
+      "expect": {
+        "tool": "create_playlist",
+        "args": {
+          "name": "late night drive"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Late Night Drive"
+              },
+              "id": "call_359345",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Late Night Drive"
+              },
+              "id": "call_282299",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Late Night Drive"
+              },
+              "id": "call_436905",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "create",
+      "prompt": "can u make a playlist 'Study Beats' pls",
+      "expect": {
+        "tool": "create_playlist",
+        "args": {
+          "name": "study beats"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Study Beats"
+              },
+              "id": "call_640842",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Study Beats"
+              },
+              "id": "call_566412",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "create_playlist",
+              "args": {
+                "name": "Study Beats"
+              },
+              "id": "call_337656",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "delete",
+      "prompt": "Delete my playlist called Old Mix",
+      "expect": {
+        "tool": "delete_playlist",
+        "args": {
+          "name": "old mix"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "delete_playlist",
+              "args": {
+                "name": "Old Mix"
+              },
+              "id": "call_629398",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "delete_playlist",
+              "args": {
+                "name": "Old Mix"
+              },
+              "id": "call_350970",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "delete_playlist",
+              "args": {
+                "name": "Old Mix"
+              },
+              "id": "call_323714",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "delete",
+      "prompt": "Get rid of the Gym playlist",
+      "expect": {
+        "tool": "delete_playlist",
+        "args": {
+          "name": "gym"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "delete_playlist",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_323016",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "delete_playlist",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_309993",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "delete_playlist",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_266778",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "privacy",
+      "prompt": "Make my Gym playlist private",
+      "expect": {
+        "tool": "toggle_playlist_privacy",
+        "args": {
+          "name": "gym"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_349442",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_310554",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_300742",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "privacy",
+      "prompt": "Toggle privacy on Study Beats",
+      "expect": {
+        "tool": "toggle_playlist_privacy",
+        "args": {
+          "name": "study beats"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Study Beats"
+              },
+              "id": "call_353363",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Study Beats"
+              },
+              "id": "call_291245",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Study Beats"
+              },
+              "id": "call_380954",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "songs",
+      "prompt": "Add Blinding Lights by The Weeknd to my Gym playlist",
+      "expect": {
+        "tool": "get_spotify_song_id",
+        "args": {
+          "song_names": [
+            "blinding lights"
+          ]
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_spotify_song_id",
+              "args": {
+                "song_names": [
+                  "The Weeknd - Blinding Lights"
+                ]
+              },
+              "id": "call_702423",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_spotify_song_id",
+              "args": {
+                "song_names": [
+                  "The Weeknd - Blinding Lights"
+                ]
+              },
+              "id": "call_348036",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_spotify_song_id",
+              "args": {
+                "song_names": [
+                  "The Weeknd - Blinding Lights"
+                ]
+              },
+              "id": "call_339966",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "songs",
+      "prompt": "Remove Levitating by Dua Lipa from Study Beats",
+      "expect": {
+        "tool": "get_spotify_song_id",
+        "args": {
+          "song_names": [
+            "levitating"
+          ]
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_spotify_song_id",
+              "args": {
+                "song_names": [
+                  "Dua Lipa - Levitating"
+                ]
+              },
+              "id": "call_358105",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_spotify_song_id",
+              "args": {
+                "song_names": [
+                  "Dua Lipa - Levitating"
+                ]
+              },
+              "id": "call_346457",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_spotify_song_id",
+              "args": {
+                "song_names": [
+                  "Dua Lipa - Levitating"
+                ]
+              },
+              "id": "call_307865",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "recommend",
+      "prompt": "Recommend me 5 jazz songs",
+      "expect": {
+        "tool": "get_recommendations",
+        "args": {
+          "tag": "jazz",
+          "limit": 5
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_recommendations",
+              "args": {
+                "tag": "jazz",
+                "limit": 5
+              },
+              "id": "call_352532",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_recommendations",
+              "args": {
+                "limit": 5,
+                "tag": "jazz"
+              },
+              "id": "call_302324",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_recommendations",
+              "args": {
+                "limit": 5,
+                "tag": "jazz"
+              },
+              "id": "call_375267",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "recommend",
+      "prompt": "Give me some rock recommendations",
+      "expect": {
+        "tool": "get_recommendations",
+        "args": {
+          "tag": "rock"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_recommendations",
+              "args": {
+                "tag": "rock",
+                "limit": 10
+              },
+              "id": "call_193284",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_recommendations",
+              "args": {
+                "tag": "rock",
+                "limit": 10
+              },
+              "id": "call_334387",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "get_recommendations",
+              "args": {
+                "limit": 10,
+                "tag": "rock"
+              },
+              "id": "call_340956",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "search",
+      "prompt": "Find the top songs of 2024",
+      "expect": {
+        "tool": "search_songs"
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "top songs of 2024"
+              },
+              "id": "call_300306",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "top songs of 2024"
+              },
+              "id": "call_365435",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "top songs of 2024"
+              },
+              "id": "call_343572",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "search",
+      "prompt": "What are some popular songs from the Interstellar soundtrack?",
+      "expect": {
+        "tool": "search_songs"
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "popular songs from Interstellar soundtrack"
+              },
+              "id": "call_287461",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "Interstellar soundtrack songs"
+              },
+              "id": "call_368787",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "Interstellar soundtrack popular songs"
+              },
+              "id": "call_357549",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "missing_info",
+      "prompt": "Make me a playlist",
+      "expect": {
+        "ask_for": "playlist name"
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "To make a playlist for you, could you please tell me what you would like to name the playlist and what kind of songs or mood you want to include in it?"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Please let me know what you would like to name the playlist and what kind of songs or mood you want to include in it!"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Please specify the name of the playlist you would like to create and the songs or mood you want to include in it."
+        }
+      ]
+    },
+    {
+      "category": "missing_info",
+      "prompt": "Delete a playlist",
+      "expect": {
+        "ask_for": "which playlist"
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Please tell me the name of the playlist you would like to delete."
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Please specify the name of the playlist you would like to delete."
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Please specify the name of the playlist you would like to delete."
+        }
+      ]
+    },
+    {
+      "category": "missing_info",
+      "prompt": "Add some songs to my playlist",
+      "expect": {
+        "ask_for": "which songs and which playlist"
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Your request is incomplete because I need more details to proceed. Could you please specify:\n\n1. The **name of the playlist** you want to add songs to.\n2. The **song names (and artists)** or track IDs you would like to add. \n\nOnce you provide these details, I'll be happy to add them to your playlist!"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Could you please specify the name of the playlist you'd like to update and the songs (or artists and track titles) you'd like to add?"
+        },
+        {
+          "passed": false,
+          "failure": "invented_args",
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "search_songs",
+              "args": {
+                "query": "popular songs"
+              },
+              "id": "call_361728",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "missing_info",
+      "prompt": "Make it private",
+      "expect": {
+        "ask_for": "which playlist"
+      },
+      "runs": [
+        {
+          "passed": false,
+          "failure": "invented_args",
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "chill"
+              },
+              "id": "call_337255",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "Please specify which playlist you would like to make private."
+        },
+        {
+          "passed": false,
+          "failure": "invented_args",
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {},
+              "id": "call_312319",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    },
+    {
+      "category": "chat",
+      "prompt": "What can you do?",
+      "expect": {
+        "no_tool_call": true
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "I am your helpful Spotify assistant! I can help you manage your music library and discover new tracks. Here are some of the things I can do:\n\n* **Create and Manage Playlists:** Create new private playlists, toggle their privacy settings, and delete playlists.\n* **Add and Remove Songs:** Search for songs, look up their Spotify IDs, and add or remove specific tracks from your playlists.\n* **Music Recommendations:** Get song recommendations tailored to specific moods or activities (like \"chill\" or \"workout\") using Last.fm.\n\nHow would you like to get started? Would you like me to create a new playlist for you or find some song recommendations?"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "I am your Spotify assistant! I can help you manage and discover music in several ways:\n\n* **Create and Manage Playlists:** Create new private playlists, delete playlists, or toggle their privacy settings.\n* **Add and Remove Songs:** Add specific songs to your playlists or delete them.\n* **Find Recommendations:** Get song recommendations based on moods or activity tags (like \"chill\" or \"workout\").\n* **Search for Songs:** Search the web for specific songs or music queries.\n* **Look Up Tracks:** Find Spotify track IDs for your favorite songs.\n\nWhat would you like to do today? For example, would you like me to create a new playlist for you?"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "I am your Spotify assistant! I can help you manage and discover music in several ways:\n\n* **Create and Manage Playlists:** Create new private playlists, delete playlists, or toggle their privacy settings.\n* **Add and Remove Songs:** Search for songs, add tracks to your playlists, or remove specific songs from them.\n* **Get Recommendations:** Find song recommendations based on moods or activity tags (like \"chill\" or \"workout\").\n\nWhat would you like to do today? For example, would you like me to create a new playlist for you?"
+        }
+      ]
+    },
+    {
+      "category": "chat",
+      "prompt": "Thanks!",
+      "expect": {
+        "no_tool_call": true
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "You're very welcome! If you'd like to create a new playlist, discover some music recommendations, or manage your existing playlists, just let me know how I can help next. Would you like to get some song recommendations for a chill or workout session?"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "You're very welcome! Let me know if you'd like me to help you create a new playlist, find some song recommendations, or manage your existing music library."
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "You're very welcome! Would you like me to help you create a new playlist, search for some songs, or get recommendations for your next listening session?"
+        }
+      ]
+    },
+    {
+      "category": "chat",
+      "prompt": "What's the capital of France?",
+      "expect": {
+        "no_tool_call": true
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "The capital of France is Paris. \n\nLet me know if you would like me to help you create a playlist of French music, or if there's anything else you'd like to do!"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "The capital of France is Paris. \n\nIs there anything else I can help you with today, perhaps related to music or playlists?"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "The capital of France is Paris. \n\nIs there anything else I can help you with, perhaps related to music, playlists, or songs?"
+        }
+      ]
+    },
+    {
+      "category": "delete_traps",
+      "prompt": "I'm thinking of cleaning up my Old Mix playlist, what do you think?",
+      "expect": {
+        "no_tool_call": true
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "It sounds like a great idea to freshen things up! Would you like to delete some songs from your \"Old Mix\" playlist, or perhaps remove the entire playlist? \n\nLet me know what you'd like to do, and I can help you clean it up!"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "It sounds like a great idea to clean up your \"Old Mix\" playlist! \n\nWould you like to delete specific songs from it, or perhaps delete the entire playlist? Let me know what you'd like to do next!"
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [],
+          "content": "It sounds like a great idea to freshen up your \"Old Mix\" playlist! \n\nWould you like to delete any specific songs from it, or perhaps remove the playlist entirely? Let me know what you'd like to do, and I can help you with that!"
+        }
+      ]
+    },
+    {
+      "category": "delete_traps",
+      "prompt": "Remove the private setting from Gym",
+      "expect": {
+        "tool": "toggle_playlist_privacy",
+        "args": {
+          "name": "gym"
+        }
+      },
+      "runs": [
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_328356",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_362478",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        },
+        {
+          "passed": true,
+          "failure": null,
+          "unrequested_delete": false,
+          "tool_calls": [
+            {
+              "name": "toggle_playlist_privacy",
+              "args": {
+                "name": "Gym"
+              },
+              "id": "call_392834",
+              "type": "tool_call"
+            }
+          ],
+          "content": ""
+        }
+      ]
+    }
+  ]
+}

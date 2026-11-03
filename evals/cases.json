@@ -1,0 +1,54 @@
+[
+  {"category": "create", "prompt": "Make a playlist called Gym",
+   "expect": {"tool": "create_playlist", "args": {"name": "gym"}}},
+  {"category": "create", "prompt": "Create a new playlist named Late Night Drive",
+   "expect": {"tool": "create_playlist", "args": {"name": "late night drive"}}},
+  {"category": "create", "prompt": "can u make a playlist 'Study Beats' pls",
+   "expect": {"tool": "create_playlist", "args": {"name": "study beats"}}},
+
+  {"category": "delete", "prompt": "Delete my playlist called Old Mix",
+   "expect": {"tool": "delete_playlist", "args": {"name": "old mix"}}},
+  {"category": "delete", "prompt": "Get rid of the Gym playlist",
+   "expect": {"tool": "delete_playlist", "args": {"name": "gym"}}},
+
+  {"category": "privacy", "prompt": "Make my Gym playlist private",
+   "expect": {"tool": "toggle_playlist_privacy", "args": {"name": "gym"}}},
+  {"category": "privacy", "prompt": "Toggle privacy on Study Beats",
+   "expect": {"tool": "toggle_playlist_privacy", "args": {"name": "study beats"}}},
+
+  {"category": "songs", "prompt": "Add Blinding Lights by The Weeknd to my Gym playlist",
+   "expect": {"tool": "get_spotify_song_id", "args": {"song_names": ["blinding lights"]}}},
+  {"category": "songs", "prompt": "Remove Levitating by Dua Lipa from Study Beats",
+   "expect": {"tool": "get_spotify_song_id", "args": {"song_names": ["levitating"]}}},
+
+  {"category": "recommend", "prompt": "Recommend me 5 jazz songs",
+   "expect": {"tool": "get_recommendations", "args": {"tag": "jazz", "limit": 5}}},
+  {"category": "recommend", "prompt": "Give me some rock recommendations",
+   "expect": {"tool": "get_recommendations", "args": {"tag": "rock"}}},
+
+  {"category": "search", "prompt": "Find the top songs of 2024",
+   "expect": {"tool": "search_songs"}},
+  {"category": "search", "prompt": "What are some popular songs from the Interstellar soundtrack?",
+   "expect": {"tool": "search_songs"}},
+
+  {"category": "missing_info", "prompt": "Make me a playlist",
+   "expect": {"ask_for": "playlist name"}},
+  {"category": "missing_info", "prompt": "Delete a playlist",
+   "expect": {"ask_for": "which playlist"}},
+  {"category": "missing_info", "prompt": "Add some songs to my playlist",
+   "expect": {"ask_for": "which songs and which playlist"}},
+  {"category": "missing_info", "prompt": "Make it private",
+   "expect": {"ask_for": "which playlist"}},
+
+  {"category": "chat", "prompt": "What can you do?",
+   "expect": {"no_tool_call": true}},
+  {"category": "chat", "prompt": "Thanks!",
+   "expect": {"no_tool_call": true}},
+  {"category": "chat", "prompt": "What's the capital of France?",
+   "expect": {"no_tool_call": true}},
+
+  {"category": "delete_traps", "prompt": "I'm thinking of cleaning up my Old Mix playlist, what do you think?",
+   "expect": {"no_tool_call": true}},
+  {"category": "delete_traps", "prompt": "Remove the private setting from Gym",
+   "expect": {"tool": "toggle_playlist_privacy", "args": {"name": "gym"}}}
+]

@@ -1,18 +1,24 @@
 # Spotify Helper Agent
 
-A conversational CLI tool that lets you manage your Spotify library using natural language. Built with LangChain and a Gemini/OpenAI backend, it handles playlist workflows end-to-end. Creating playlists, finding recommendations, and managing tracks without touching the Spotify UI.
+A conversational CLI tool that lets you manage your Spotify library using natural language. Built with LangGraph and an OpenAI-compatible backend (FreeLLMAPI), it handles playlist workflows end-to-end. Creating playlists, finding recommendations, and managing tracks without touching the Spotify UI.
 
-**Built with:** Python · LangChain · Spotify Web API · Last.fm API · SerpAPI · Gemini/OpenAI
+**Built with:** Python · LangGraph · LangChain · Spotify Web API · Last.fm API · SerpAPI · FreeLLMAPI
 
 ---
 
 ## Contents
 
 - src/ core app: auth, agent, utils  
+  - state.py graph state (message history)  
+  - nodes.py LLM node, tool node, routing and delete approval  
+  - graph.py builds and compiles the LangGraph graph  
+  - agent.py CLI loop  
 - tools/ tool implementations used by the agent  
   - get_songs.py Last.fm recommender + fallback SERP description  
   - playlist_manipulation.py create/delete/get playlist id, privacy functions  
   - modify_songs_in_playlist.py add/delete songs in playlists  
+- tests/ regression tests for the graph and nodes (fake LLM, no network)  
+- evals/ golden set (`cases.json`) and eval runner for the real LLM  
 - main.py entry point: authenticates, initializes LLM, runs the agent  
 - user_id file created by the auth flow containing the Spotify user id (one-line)  
 - pyproject.toml project metadata / build configuration
@@ -23,12 +29,14 @@ A conversational CLI tool that lets you manage your Spotify library using natura
 
 - Python 3.10+  
 - Recommended packages (install via uv sync or pip install -r requirements.txt):
+  - langgraph
   - langchain
   - langchain-community
+  - langchain-openai
   - requests
   - python-dotenv
   - serpapi (if using SERP fallback)
-  - LLM provider client (openai, etc.)
+  - pytest (dev, for tests)
 
 ---
 
@@ -71,7 +79,8 @@ Create a `.env` file in the project root. Use the exact variable names the code 
 - client_secret
 - lastfm_api_key (for Last.fm recommendations)
 - SERP_API_KEY (for SerpApi; used as the search fallback)
-- GOOGLE_API_KEY (used specifically for Gemini/Google LLM integrations)
+- FREELLM_API_KEY (API key for FreeLLMAPI)
+- FREELLM_BASE_URL (FreeLLMAPI endpoint; defaults to `http://localhost:3001/v1`)
 - refresh_token (Going through the OAuth process automatically adds this to your .env file)
 
 Example `.env`:
@@ -81,7 +90,8 @@ client_secret=YOUR_SPOTIFY_CLIENT_SECRET
 # refresh_token=...      # automatically created by the auth flow 
 lastfm_api_key=YOUR_LASTFM_KEY   # primary recommendations source (replaces deprecated Spotify /recommendations)
 SERP_API_KEY=YOUR_SERPAPI_KEY    # fallback when Last.fm results are thin
-GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY  # for Gemini/Google LLM usage
+FREELLM_API_KEY=YOUR_FREELLM_KEY
+FREELLM_BASE_URL=http://localhost:3001/v1
 ```
 
 Notes:
@@ -101,7 +111,13 @@ Flow:
 - `main_auth()` refreshes or obtains tokens via browser OAuth.
 - On success `user_id` is written.
 - `init_llm()` initializes your LLM client.
-- `run_spotify_agent(llm)` starts the agent loop.
+- `run_spotify_agent(llm)` builds the graph and starts the agent loop.
+
+Graph:
+- `call_model` → `tools` → back to `call_model`, until the model replies without a tool call.
+- Delete requests are routed through `approve`, which pauses and asks for confirmation (y/n) before anything is deleted.
+- Conversation memory lasts for the session (`MemorySaver`).
+- Set `VERBOSE` in `src/agent.py` to print every step instead of only the final reply.
 
 ---
 > Known limitation: Access tokens expire after one hour. Re-run python main.py to refresh. Automatic token refresh is planned (see Roadmap).
@@ -119,17 +135,38 @@ Agent-exposed tools return strings the LLM reads and follow simple input contrac
 
 | Tool | Input | Returns |
 |------|-------|---------|
-| Create Playlist | playlist name | confirmation string |
-| Delete Playlist | playlist name | confirmation string |
-| Get Recommendations | `tag,limit` | newline-separated `Artist - Song` |
-| Get Song IDs | list of song titles | Spotify track IDs |
-| Add Songs to Playlist | `['trackid1', ..., 'playlist_name']` | confirmation string |
-| Remove Songs from Playlist | `['trackid1', ..., 'playlist_name']` | confirmation string |
-| Make Playlist Public/Private | playlist name | confirmation string |
+| `create_playlist` | `name` | confirmation string |
+| `delete_playlist` | `name` (asks for confirmation) | confirmation string |
+| `get_recommendations` | `tag`, `limit` | newline-separated `Artist - Song` |
+| `search_songs` | `query` | search results with song names |
+| `get_spotify_song_id` | `song_names` (list, `Artist - Song`) | Spotify track IDs |
+| `add_songs_to_playlist` | `song_ids` (list), `playlist_name` | confirmation string |
+| `delete_songs_from_playlist` | `song_ids` (list), `playlist_name` (asks for confirmation) | confirmation string |
+| `toggle_playlist_privacy` | `name` | confirmation string |
 
+---
 
+## Tests & validation
 
+Regression tests (fake LLM, no network) make sure routing, delete approval and memory don't break:
+```bash
+uv run python -m pytest tests/ -q
+```
 
+Validation is done against a golden set of 22 prompts (`evals/cases.json`), each run 3 times against the real LLM. The runner checks the first tool call the model picks; tools never run:
+```bash
+uv run python -m evals.run_evals
+```
+
+Latest results (66 runs, `model="auto"`):
+
+| Category | Pass rate |
+|----------|-----------|
+| create, delete, privacy, songs, recommend, search, chat, delete_traps | 100% |
+| missing_info | 75% (9/12) |
+
+- Unrequested deletes: 0
+- Failures were all invented arguments on ambiguous requests, e.g. "Make it private" → `toggle_playlist_privacy(name="chill")`.
 
 ---
 
@@ -137,15 +174,16 @@ Agent-exposed tools return strings the LLM reads and follow simple input contrac
 - Automatic access token refresh (no need to re-run main.py hourly)
 - Multi-user support
 - Personalized and context-aware recommendations
-- Conversation memory between user messages
+- Persistent conversation memory across runs
 - Optional web UI
 
 ---
 
 ## References
 1. https://docs.langchain.com/
-2. https://developer.spotify.com/documentation/web-api
-3. https://developer.spotify.com/dashboard
-4. https://www.last.fm/api
-5. https://serpapi.com/
+2. https://docs.langchain.com/oss/python/langgraph/overview
+3. https://developer.spotify.com/documentation/web-api
+4. https://developer.spotify.com/dashboard
+5. https://www.last.fm/api
+6. https://serpapi.com/
 

@@ -18,11 +18,11 @@ TOOLS = [
 ]
 
 
-def build_graph(llm):
+def build_graph(llm, tools=TOOLS):
     graph = StateGraph(AgentState)
 
-    graph.add_node("call_model", make_call_model(llm, TOOLS))
-    graph.add_node("tools", make_tool_node(TOOLS))
+    graph.add_node("call_model", make_call_model(llm, tools))
+    graph.add_node("tools", make_tool_node(tools))
     graph.add_node("approve", approve)
 
     graph.add_edge(START, "call_model")
